@@ -121,7 +121,7 @@ map<int, double> BaseDados::hash() {
 		for (i = nomeDocumentos.begin(); i != nomeDocumentos.end(); i++) {
 			//int valorVetor = atoi(i->c_str());
 			//int valorMap = atoi(x->first->c_str());
-			if ((this->exite(palavra)) {
+			if (this->exite(palavra,i*){
 				iAux->fist = x * numeroPalavra + valorVetor;
 					int tf = ocorrenciasArquivo(palavra, *i);
 					iAux->second = importancia(palavra) * tf;//pegar valor frequencia e botar idf
