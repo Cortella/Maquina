@@ -43,11 +43,18 @@ public:
 
 	//calcula itf de apenas uma palavra
 	double calcularIdf(string palavra);
-	//Cria sistema de coordenada por funcao hash
+
+	//Cria sistema de coordenada Para arquivos existentes
 	map<int, double> hash();
+
+	//Insere pesquisa no sistema de coordenadas
+	void hash(string palavra);
+
 	//funcao de entrada
 	
 	string entrada();
+	//determina coordenadas
+	vector<string,
 	//Ranking Cosseno - Buscar
 	vector<string>buscar(std::string busca);
 
@@ -56,12 +63,14 @@ public:
 	//Paçavra pertence a doc
 	bool exite(string palavra, string documentos);
 	
-	
+	//
+	void imprimirRanking();
 	
 private:
 	map<std::string, set<std::string>> mapa; // Mapa que representa o indice invertido
 	std::string palavra; // Palavras dos arquivos
-	svector<string> nomeDocumentos;
+	vector<string> nomeDocumentos;
+	vector<int, double> coordenadas;
 };
 
 

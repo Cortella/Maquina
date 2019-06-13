@@ -6,7 +6,10 @@
 
 using namespace std;
 
-BaseDados::BaseDados() {}
+BaseDados::BaseDados() {
+	
+	this->coordenadas = hash();
+}
 
 void BaseDados::inserir(string palavra, string documento) {
 	set<string> docs = { documento };
@@ -100,8 +103,13 @@ map<string, int> BaseDados::frequencia(string palavra) { //calculo do tf
 
 double BaseDados::importancia(string palavra) {
 	double idf;
-	idf= log(NUMERO_DOCUMENTOS / numeroArquivo(palavra));	
-	return idf;
+	int a = numeroArquivo(palavra);
+	if (a == 0) {
+		return 0;
+	} else {
+		idf = log(NUMERO_DOCUMENTOS / numeroArquivo(palavra));
+		return idf;
+	}
 }
 
 double BaseDados::calcularIdf(string palavra) {
@@ -109,22 +117,24 @@ double BaseDados::calcularIdf(string palavra) {
 }
 
 map<int, double> BaseDados::hash() {
-	int numeroPalavra=mapa.size();;
+	int numeroPalavra=mapa.size();
 	map<int, double>aux;
-	auto iAux = aux.begin();
+	map<int,double>::iterator iAux = aux.begin();
 	vector<string>::iterator i;//iterator referente ao vector com nome dos documentos
 
 	for (auto it = mapa.begin(), int x; it != mapa.end(); it++, x++) { // Avanca o map<string,set<string> 
 		string palavra = it->first;
 		map<string, int> resultado = frequencia(palavra);
+		auto passaFrequencia = resultado.begin();
 		auto docFrequencia = resultado.begin(); //Mapa (doc,frequencia)
 		for (i = nomeDocumentos.begin(); i != nomeDocumentos.end(); i++) {
-			//int valorVetor = atoi(i->c_str());
-			//int valorMap = atoi(x->first->c_str());
-			if (this->exite(palavra,i*){
-				iAux->fist = x * numeroPalavra + valorVetor;
+			int valorVetor = atoi(i->c_str());
+			int valorMap = atoi(x->first->c_str());
+			if (valorVetor == valorMap){
+				iAux->first = x * numeroPalavra + valorVetor;
 					int tf = ocorrenciasArquivo(palavra, *i);
-					iAux->second = importancia(palavra) * tf;//pegar valor frequencia e botar idf
+					iAux->second = importancia(palavra) * ((double)*tf);//pegar valor frequencia e botar idf
+					passaFrequencia++;
 			} else {
 				iAux->fist = x * numeroPalavra + valorVetor;
 					iAux->second = 0;
@@ -135,6 +145,32 @@ map<int, double> BaseDados::hash() {
 		return aux;
 	}
 
+void BaseDados::hash(string pesquisa) {
+	int numeroPalavra = mapa.size();
+	vector<string> divido;
+	vector<string>::iterator i = divido.begin(); //iterator referente ao vector com nome dos documentos
+
+	for (auto it = mapa.begin(), int x; it != mapa.end(); it++, x++) { // Avanca o map<string,set<string> 
+		string palavra = it->first;
+		map<string, int> resultado = frequencia(palavra);
+		auto passaFrequencia = resultado.begin();
+		auto docFrequencia = resultado.begin(); //Mapa (doc,frequencia)
+			int valorVetor = atoi(i->c_str());
+			int valorMap = atoi(x->first->c_str());
+			if (valorVetor == valorMap) {
+				iAux->first = x * numeroPalavra + valorVetor;
+				int tf = ocorrenciasArquivo(palavra, *i);
+				iAux->second = importancia(palavra) * ((double)* tf);//pegar valor frequencia e botar idf
+				passaFrequencia++;
+			} else {
+				iAux->fist = x * numeroPalavra + valorVetor;
+				iAux->second = 0;
+			}
+		
+	}
+}
+
+
 	string BaseDados::entrada() {
 		string aux;
 		cout << "Consulta: ";
@@ -144,10 +180,13 @@ map<int, double> BaseDados::hash() {
 
 	map<string,double> BaseDados::buscar(std::string busca) {
 		map<string, double> aux;
+		double s1, s2, s3;
 
+		double simDoc = s1 / sqrt(s2 * s3);
 		return aux;
 	}
 
+	
 	vector<string> BaseDados::getDocumentos() {
 		return vector<string>();
 	}
@@ -159,7 +198,11 @@ map<int, double> BaseDados::hash() {
 			else
 				return false;
 		}
-		;
+		
+	}
+
+	void BaseDados::imprimirRanking() {
+
 	}
 
 	
