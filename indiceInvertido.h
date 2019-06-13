@@ -1,8 +1,9 @@
 #ifndef INDICEINVERTIDO_H
 #define INDICEINVERTIDO_H
 
-const NUMERO_DOCUMENTOS= 5;
+const int NUMERO_DOCUMENTOS= 5;
 #include <string>
+#include <vector>
 #include <map>
 #include <set>
 #include <math.h>
@@ -44,14 +45,26 @@ public:
 	double calcularIdf(string palavra);
 	//Cria sistema de coordenada por funcao hash
 	map<int, double> hash();
-	//
+	//funcao de entrada
+	
+	string entrada();
+	//Ranking Cosseno - Buscar
+	vector<string>buscar(std::string busca);
+
+	//Retorna nome dos documentos
+	vector<string> getDocumentos();
+	//Paçavra pertence a doc
+	bool exite(string palavra, string documentos);
 	
 	
 	
 private:
-	map<string, set<string>> mapa; // Mapa que representa o indice invertido
-	string palavra; // Palavras dos arquivos
-
+	map<std::string, set<std::string>> mapa; // Mapa que representa o indice invertido
+	std::string palavra; // Palavras dos arquivos
+	svector<string> nomeDocumentos;
 };
 
+
 #endif  // INDICEINVERTIDO_H
+
+

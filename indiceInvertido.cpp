@@ -78,6 +78,7 @@ bool BaseDados::pertence(string palavra) {
 	return (mapa.find(palavra) != mapa.end());
 }
 
+
 map<string, int> BaseDados::frequencia(string palavra) { //calculo do tf
 	set<string> arquivos;
 	
@@ -108,34 +109,60 @@ double BaseDados::calcularIdf(string palavra) {
 }
 
 map<int, double> BaseDados::hash() {
-	int numeroPalavra=50000;
-	vector<string> = nomeDocumentos;
+	int numeroPalavra=mapa.size();;
 	map<int, double>aux;
 	auto iAux = aux.begin();
 	vector<string>::iterator i;//iterator referente ao vector com nome dos documentos
 
-	for (auto it = mapa.begin(), int x ; it != mapa.end();it++,x++){ // Avanca o map<string,set<string> 
+	for (auto it = mapa.begin(), int x; it != mapa.end(); it++, x++) { // Avanca o map<string,set<string> 
 		string palavra = it->first;
-		map<string, int> resultado = frequencia(it->first);
+		map<string, int> resultado = frequencia(palavra);
 		auto docFrequencia = resultado.begin(); //Mapa (doc,frequencia)
-		for(i = nomeDocumentos.begin(); != nomeDocumentos.end();i++){
-			int valorVetor = atoi(i->c_str());
-			int valorMap = atoi(x->first->c_str());
-		if((valorVetor == valorMap ) {
-			iAux->fist = x*numeroPalavra + valorVetor;
-			int tf = ocorrenciasArquivo(palavra,*i);
-			iAux->second = importancia(palavra)*tf;//pegar valor frequencia e botar idf
-		}
-		else { 
-			iAux->fist = x*numeroPalavra + valorVetor;
-				iAux->second = 0;
+		for (i = nomeDocumentos.begin(); i != nomeDocumentos.end(); i++) {
+			//int valorVetor = atoi(i->c_str());
+			//int valorMap = atoi(x->first->c_str());
+			if ((this->exite(palavra)) {
+				iAux->fist = x * numeroPalavra + valorVetor;
+					int tf = ocorrenciasArquivo(palavra, *i);
+					iAux->second = importancia(palavra) * tf;//pegar valor frequencia e botar idf
+			} else {
+				iAux->fist = x * numeroPalavra + valorVetor;
+					iAux->second = 0;
+			}
 		}
 	}
-	
-	
-	return aux;
-}
 
+		return aux;
+	}
+
+	string BaseDados::entrada() {
+		string aux;
+		cout << "Consulta: ";
+		cin >> aux;
+		return aux;
+	}
+
+	map<string,double> BaseDados::buscar(std::string busca) {
+		map<string, double> aux;
+
+		return aux;
+	}
+
+	vector<string> BaseDados::getDocumentos() {
+		return vector<string>();
+	}
+
+	bool BaseDados::exite(string palavra, string documentos) {
+		for (auto it = mapa.find(palavra); *it <= numeroDocumentos(palavra); it++) {
+			if (documentos == *it)
+				return true;
+			else
+				return false;
+		}
+		;
+	}
+
+	
 
 
 
