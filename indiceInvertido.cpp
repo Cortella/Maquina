@@ -185,8 +185,8 @@ string BaseDados::entrada() {
 	return aux;
 }
 
-map<int, double> BaseDados::rankingCoss(string busca) {
-	map<int, double> aux;
+map<double, int> BaseDados::rankingCoss() {
+	map<double, int> SIM;
 		int numero_palavras = mapa.size() ;
 		double Somatorio1, Somatorio2, Somatorio3 = 0;
 		vector<string>::iterator i;
@@ -202,17 +202,17 @@ map<int, double> BaseDados::rankingCoss(string busca) {
 				Somatorio3 += (B * B);
 			}
 			double SimDQ = Somatorio1 / (sqrt(Somatorio2) * sqrt(Somatorio3));
-			pair<int, double> p(atoi(i->c_str()), SimDQ);
-			aux.insert(p);
+			pair<int, double> p(SimDQ,atoi(i->c_str()));
+			SIM.insert(p);
 		}  
-	return aux;
+	return SIM;
 	}
 
 
 
 
 bool BaseDados::exite(string palavra, string documentos) {
-	for (auto it = mapa.find(palavra); *it <= numeroDocumentos(palavra); it++) {
+	for (auto it = mapa.find(palavra); *it <= numeroDocumentos; it++) {
 		if (documentos == *it)
 			return true;
 		else
@@ -222,7 +222,13 @@ bool BaseDados::exite(string palavra, string documentos) {
 }
 
 void BaseDados::imprimirRanking() {
-
+	map<double, int> aux = this->rankingCoss();
+	map<double, int>::reverse_iterator it = aux.rbegin();
+	cout << "__________________________________________";
+	for (int i = 0; i < 20; i++) {
+		cout << " | "  << (it->second) << " | " <<endl;
+	}
+	cout << "___________________________________________";
 }
 
 

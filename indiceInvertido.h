@@ -55,7 +55,7 @@ public:
 	string entrada();
 
 	//Ranking Cosseno
-	map<int, double> rankingCoss(string busca);
+	map<double,int> rankingCoss();
 
 	//Paçavra pertence a doc
 	bool exite(string palavra, string documentos);
