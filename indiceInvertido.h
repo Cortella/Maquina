@@ -36,7 +36,7 @@ public:
 	map<string, int> frequencia(string palavra);
 
 	//Calcula itf de varias palavras
-	map<double,string> importancia(vector<string> pesquisa);
+	double importancia(string pesquisa);
 
 	//Calcula tf de apenas uma palavra
 	int calcularTf(string palavra );
@@ -53,24 +53,21 @@ public:
 	//funcao de entrada
 	
 	string entrada();
-	//determina coordenadas
-	vector<string,
-	//Ranking Cosseno - Buscar
-	vector<string>buscar(std::string busca);
 
-	//Retorna nome dos documentos
-	vector<string> getDocumentos();
+	//Ranking Cosseno
+	map<int, double> rankingCoss(string busca);
+
 	//Paçavra pertence a doc
 	bool exite(string palavra, string documentos);
 	
-	//
+	//imprime ranking
 	void imprimirRanking();
 	
 private:
 	map<std::string, set<std::string>> mapa; // Mapa que representa o indice invertido
 	std::string palavra; // Palavras dos arquivos
 	vector<string> nomeDocumentos;
-	vector<int, double> coordenadas;
+	map<int, double> coordenadas;
 };
 
 

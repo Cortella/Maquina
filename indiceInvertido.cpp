@@ -7,7 +7,7 @@
 using namespace std;
 
 BaseDados::BaseDados() {
-	
+
 	this->coordenadas = hash();
 }
 
@@ -45,7 +45,7 @@ int BaseDados::ocorrenciasArquivo(string palavra, string documento) {
 		for (int i = 0; palavra_no_arq[i] != '\0'; i++) { // Loop para eliminar simbolos e letras maiusculas das palavras do arquivo
 			palavra_no_arq[i] = tolower(palavra_no_arq[i]);
 			palavra_no_arq.erase(remove_if(palavra_no_arq.begin(), palavra_no_arq.end(), [](char c) { return !isalpha(c) && !isdigit(c); }), palavra_no_arq.end());
-			
+
 		}
 		if (palavra == palavra_no_arq) {
 			contador++;
@@ -66,13 +66,14 @@ void BaseDados::ler_inserir_Arquivos() {
 			exit(1);
 		}
 
-		while (inFile >> palavra) { 
+		while (inFile >> palavra) {
 			for (int i = 0; palavra[i] != '\0'; i++) { // Loop para eliminar simbolos e letras maiusculas das palavras do arquivo
 				palavra[i] = tolower(palavra[i]);
 				palavra.erase(remove_if(palavra.begin(), palavra.end(), [](char c) { return !isalpha(c) && !isdigit(c); }), palavra.end());
 			}
-	        inserir(palavra, to_string(p));
+			inserir(palavra, to_string(p));
 		}
+		nomeDocumentos.push_back(to_string(p));
 		inFile.close();
 	}
 }
@@ -84,8 +85,9 @@ bool BaseDados::pertence(string palavra) {
 
 map<string, int> BaseDados::frequencia(string palavra) { //calculo do tf
 	set<string> arquivos;
-	
-	if (this->pertence(palavra)); {
+
+	if (this->pertence(palavra));
+	{
 		arquivos = mapa[palavra];
 	}
 
@@ -101,28 +103,19 @@ map<string, int> BaseDados::frequencia(string palavra) { //calculo do tf
 }
 
 
-double BaseDados::importancia(string palavra) {
-	double idf;
-	int a = numeroArquivo(palavra);
-	if (a == 0) {
-		return 0;
-	} else {
-		idf = log(NUMERO_DOCUMENTOS / numeroArquivo(palavra));
-		return idf;
-	}
-}
+
 
 double BaseDados::calcularIdf(string palavra) {
 	return log(NUMERO_DOCUMENTOS / numeroArquivo(palavra));;
 }
 
 map<int, double> BaseDados::hash() {
-	int numeroPalavra=mapa.size();
+	int numeroPalavra = mapa.size();
 	map<int, double>aux;
-	map<int,double>::iterator iAux = aux.begin();
+	map<int, double>::iterator iAux = aux.begin();
 	vector<string>::iterator i;//iterator referente ao vector com nome dos documentos
 
-	for (auto it = mapa.begin(), int x; it != mapa.end(); it++, x++) { // Avanca o map<string,set<string> 
+	for (auto it = mapa.begin(), int x=1; it != mapa.end(); it++, x++) { // Avanca o map<string,set<string> 
 		string palavra = it->first;
 		map<string, int> resultado = frequencia(palavra);
 		auto passaFrequencia = resultado.begin();
@@ -130,82 +123,112 @@ map<int, double> BaseDados::hash() {
 		for (i = nomeDocumentos.begin(); i != nomeDocumentos.end(); i++) {
 			int valorVetor = atoi(i->c_str());
 			int valorMap = atoi(x->first->c_str());
-			if (valorVetor == valorMap){
+			if (valorVetor == valorMap) {
 				iAux->first = x * numeroPalavra + valorVetor;
-					int tf = ocorrenciasArquivo(palavra, *i);
-					iAux->second = importancia(palavra) * ((double)*tf);//pegar valor frequencia e botar idf
-					passaFrequencia++;
+				int tf = ocorrenciasArquivo(palavra, *i);
+				iAux->second = calcularIdf(palavra) * ((double)* tf);//pegar valor frequencia e botar idf
+				passaFrequencia++;
 			} else {
-				iAux->fist = x * numeroPalavra + valorVetor;
-					iAux->second = 0;
+				iAux->first = x * numeroPalavra + valorVetor;
+				iAux->second = 0;
 			}
 		}
 	}
 
-		return aux;
-	}
+	return aux;
+}
 
 void BaseDados::hash(string pesquisa) {
 	int numeroPalavra = mapa.size();
 	vector<string> divido;
-	vector<string>::iterator i = divido.begin(); //iterator referente ao vector com nome dos documentos
-
-	for (auto it = mapa.begin(), int x; it != mapa.end(); it++, x++) { // Avanca o map<string,set<string> 
-		string palavra = it->first;
-		map<string, int> resultado = frequencia(palavra);
-		auto passaFrequencia = resultado.begin();
-		auto docFrequencia = resultado.begin(); //Mapa (doc,frequencia)
-			int valorVetor = atoi(i->c_str());
-			int valorMap = atoi(x->first->c_str());
-			if (valorVetor == valorMap) {
-				iAux->first = x * numeroPalavra + valorVetor;
-				int tf = ocorrenciasArquivo(palavra, *i);
-				iAux->second = importancia(palavra) * ((double)* tf);//pegar valor frequencia e botar idf
-				passaFrequencia++;
-			} else {
-				iAux->fist = x * numeroPalavra + valorVetor;
-				iAux->second = 0;
-			}
-		
+	vector<string>::iterator vectorI = divido.begin(); //iterator referente ao vector com nome dos documentos
+	map<int, double>::iterator coordenadasI;
+	string inserir;
+	for (int i = 0; pesquisa[i] != '\0'; i++) {
+		char aux = pesquisa[i];
+		int teste = aux;
+		inserir[i] = pesquisa[i];
+		if (teste == 32 || aux == '\0') {
+			divido.push_back(inserir);
+			inserir = "";
+		}
 	}
+
+	for (map<string,set<string>>::iterator iAux = mapa.begin(), int x=1; iAux != mapa.end(); iAux++, x++) { // Avanca o map<string,set<string> 
+		int contem = 0;
+		string palavra = iAux->first;
+		for (vectorI; vectorI != divido.end(); vectorI++) {
+			
+			
+			if (palavra == *vectorI) {
+				contem++;
+			}
+		}
+		if (contem > 0) {
+			coordenadas.insert(x * numeroPalavra + 1, calcularIdf(palavra) * ((double)contem));
+			coordenadasI->first = x * numeroPalavra + 1;
+			coordenadasI->second = calcularIdf(palavra) * ((double)contem);//pegar valor frequencia e botar idf
+			
+		}
+
+		else {
+			coordenadasI->first = x * numeroPalavra + 1;
+			coordenadasI->second = 0;
+		}
+
+	}
+}
+string BaseDados::entrada() {
+	string aux;
+	cout << "Consulta: ";
+	cin >> aux;
+	return aux;
+}
+
+map<int, double> BaseDados::rankingCoss(string busca) {
+	map<int, double> aux;
+		int numero_palavras = mapa.size() ;
+		double Somatorio1, Somatorio2, Somatorio3 = 0;
+		vector<string>::iterator i;
+		map<int, double>::iterator j;
+		for (i = nomeDocumentos.begin(); i != nomeDocumentos.end(); i++) {
+			for (int x = 1; x <= numero_palavras; x++) {
+				j = coordenadas.find(x * numero_palavras + atoi(i->c_str()));
+				double A = j->second;
+				j = coordenadas.find(x * numero_palavras + 1);
+				double B = j->second;
+				Somatorio1 += (A * B);
+				Somatorio2 += (A * A);
+				Somatorio3 += (B * B);
+			}
+			double SimDQ = Somatorio1 / (sqrt(Somatorio2) * sqrt(Somatorio3));
+			pair<int, double> p(atoi(i->c_str()), SimDQ);
+			aux.insert(p);
+		}  
+	return aux;
+	}
+
+
+
+
+bool BaseDados::exite(string palavra, string documentos) {
+	for (auto it = mapa.find(palavra); *it <= numeroDocumentos(palavra); it++) {
+		if (documentos == *it)
+			return true;
+		else
+			return false;
+	}
+
+}
+
+void BaseDados::imprimirRanking() {
+
 }
 
 
-	string BaseDados::entrada() {
-		string aux;
-		cout << "Consulta: ";
-		cin >> aux;
-		return aux;
-	}
 
-	map<string,double> BaseDados::buscar(std::string busca) {
-		map<string, double> aux;
-		double s1, s2, s3;
 
-		double simDoc = s1 / sqrt(s2 * s3);
-		return aux;
-	}
 
-	
-	vector<string> BaseDados::getDocumentos() {
-		return vector<string>();
-	}
-
-	bool BaseDados::exite(string palavra, string documentos) {
-		for (auto it = mapa.find(palavra); *it <= numeroDocumentos(palavra); it++) {
-			if (documentos == *it)
-				return true;
-			else
-				return false;
-		}
-		
-	}
-
-	void BaseDados::imprimirRanking() {
-
-	}
-
-	
 
 
 
